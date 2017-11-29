@@ -1,4 +1,4 @@
-package aconcorrencia.obdsync.command.at.at;
+package aconcorrencia.obdsync.command.at.commands;
 
 import aconcorrencia.obdsync.command.at.ATCommand;
 
@@ -8,6 +8,6 @@ import aconcorrencia.obdsync.command.at.ATCommand;
 
 public class AutoProtocolATCommand extends ATCommand{
     public AutoProtocolATCommand(){
-        super("AT SP0");
+        super("SP0");
     }
 }

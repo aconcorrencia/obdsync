@@ -26,7 +26,7 @@ public abstract class OBDCommand<T>{
     }
 
     public abstract T getDefaultData();
-    protected abstract T getData(String data);
+    protected abstract T getData(String data,ArrayList<Integer> bytesResult);
 
     private static void sendCommand(String command, OutputStream outputStream) throws IOException{
         byte[] commandBytes;
@@ -91,6 +91,6 @@ public abstract class OBDCommand<T>{
             data = read(inputStream);
         }
 
-        return getData(data);
+        return getData(data,bytesResult);
     }
 }

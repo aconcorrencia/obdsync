@@ -1,6 +1,5 @@
-package aconcorrencia.obdsync.command.at.at;
+package aconcorrencia.obdsync.command.at.commands;
 
-import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.at.ATCommand;
 
 /**
@@ -9,6 +8,6 @@ import aconcorrencia.obdsync.command.at.ATCommand;
 
 public class ResetATCommand extends ATCommand{
     public ResetATCommand(){
-        super("AT Z");
+        super("Z");
     }
 }

@@ -1,9 +1,9 @@
 package aconcorrencia.obdsync.connection.bluetooth;
 
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.command.at.at.AutoProtocolATCommand;
-import aconcorrencia.obdsync.command.at.at.ResetATCommand;
-import aconcorrencia.obdsync.command.mode1.mode01.AvailablePidsCommand;
+import aconcorrencia.obdsync.command.at.commands.AutoProtocolATCommand;
+import aconcorrencia.obdsync.command.at.commands.ResetATCommand;
+import aconcorrencia.obdsync.command.mode1.commands.AvailablePidsCommand;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
