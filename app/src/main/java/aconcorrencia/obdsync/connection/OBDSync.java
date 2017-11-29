@@ -1,5 +1,6 @@
 package aconcorrencia.obdsync.connection;
 
+import aconcorrencia.obdsync.command.OBDCommandExecuter;
 import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionHandleable;
 import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionThread;
 import android.app.Activity;
@@ -19,11 +20,13 @@ public class OBDSync{
     private String bluetoothMACAddress;
 
     private BluetoothConnectionThread bluetoothConnectionThread = null;
+    private OBDCommandExecuter obdCommandExecuter = null;
 
     public OBDSync(Activity activity, BluetoothConnectionHandleable handleable, String bluetoothMACAddress){
         this.activity = activity;
         this.handleable = handleable;
         this.bluetoothMACAddress = bluetoothMACAddress;
+        initialize();
     }
 
     public <T extends Activity & BluetoothConnectionHandleable> OBDSync(T activityBluetoothHandleable, String bluetoothMACAddress){
@@ -32,6 +35,10 @@ public class OBDSync{
 
     private boolean isBluetoothConnectionInitialized(){
         return bluetoothConnectionThread != null;
+    }
+
+    private boolean isBluetoothConnectionSuccessful(){
+        return obdCommandExecuter != null;
     }
 
     private BluetoothAdapter getBluetoothAdapter(){
@@ -48,6 +55,13 @@ public class OBDSync{
 
     private BluetoothDevice getBluetoothDevice(String mac){
         return getBluetoothAdapter().getRemoteDevice(mac);
+    }
+
+    public OBDCommandExecuter getExecuter(){
+        if(!isBluetoothConnectionSuccessful()){
+            throw new IllegalStateException("Executor não foi iniciado");
+        }
+        return obdCommandExecuter;
     }
 
     public void destroy(){
@@ -73,14 +87,21 @@ public class OBDSync{
                     protected void onStart(){
 
                     }
+
+                    @Override
+                    protected void onEnd(){
+
+                    }
+
                     @Override
                     protected void onError(){
                         handleable.onBluetoothConnectionError();
                     }
 
                     @Override
-                    protected void onSuccess(){
+                    protected void onSuccess(OBDCommandExecuter obdCommandExecuter1){
                         handleable.afterBluetoothConnection();
+                        obdCommandExecuter = obdCommandExecuter1;
                     }
 
                     @Override

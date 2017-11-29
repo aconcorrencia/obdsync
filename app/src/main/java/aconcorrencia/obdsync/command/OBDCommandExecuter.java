@@ -1,5 +1,7 @@
 package aconcorrencia.obdsync.command;
 
+import aconcorrencia.obdsync.command.OBDCommand;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

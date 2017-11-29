@@ -26,11 +26,13 @@ public abstract class BluetoothConnectionThread extends Thread{
 
     protected abstract void onError();
 
-    protected abstract void onSuccess();
+    protected abstract void onSuccess(OBDCommandExecuter obdCommandExecuter);
 
     protected abstract void onCancel();
 
     protected abstract void onStart();
+
+    protected abstract void onEnd();
 
     public final void run(){
         InputStream inputStream;
@@ -47,8 +49,7 @@ public abstract class BluetoothConnectionThread extends Thread{
                     bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(UUID.randomUUID());
                 }
                 catch(RuntimeException e){
-                    onError();
-                    return;
+                    throw new IOException(e);
                 }
             }
             bluetoothSocket.connect();
@@ -61,11 +62,13 @@ public abstract class BluetoothConnectionThread extends Thread{
             executer.execute(AutoProtocolATCommand.class);
             executer.execute(AvailablePidsCommand.class);
 
-            onSuccess();
+            onSuccess(executer);
         }
         catch(IOException e){
+            e.printStackTrace();
             onError();
         }
+        onEnd();
     }
 
     public void cancel() {
