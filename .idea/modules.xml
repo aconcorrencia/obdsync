@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/OBDSync.iml" filepath="$PROJECT_DIR$/OBDSync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/obdsync.iml" filepath="$PROJECT_DIR$/obdsync.iml" />
     </modules>
   </component>
 </project>
