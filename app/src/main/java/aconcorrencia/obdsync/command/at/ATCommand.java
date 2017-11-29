@@ -2,6 +2,8 @@ package aconcorrencia.obdsync.command.at;
 
 import aconcorrencia.obdsync.command.OBDCommand;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +18,11 @@ public abstract class ATCommand extends OBDCommand<String>{
     @Override
     public String getDefaultData(){
         return null;
+    }
+
+    @Override
+    protected boolean noData() {
+        return true;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package aconcorrencia.obdsync.command;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,7 +39,11 @@ public abstract class OBDCommand<T>{
         outputStream.flush();
     }
 
-    private String read(InputStream inputStream) throws IOException{
+    protected boolean noData(){
+        return false;
+    }
+
+    protected String read(InputStream inputStream) throws IOException{
         byte b;
         StringBuilder stringBuilder;
         String data;
@@ -65,12 +71,17 @@ public abstract class OBDCommand<T>{
             //  throw new NonNumericResponseException(rawData);
         }
 
+        if(noData()){
+            return null;
+        }
+
         // read string each two chars
         bytesResult.clear();
         int begin = 0;
         int end = 2;
         while(end <= data.length()){
-            bytesResult.add(Integer.decode("0x" + data.substring(begin, end)));
+            String byteString = data.substring(begin, end);
+            bytesResult.add(Integer.decode("0x" + byteString));
             begin = end;
             end += 2;
         }

@@ -4,6 +4,8 @@ import aconcorrencia.obdsync.command.OBDCommandExecuter;
 import aconcorrencia.obdsync.command.at.commands.AutoProtocolATCommand;
 import aconcorrencia.obdsync.command.at.commands.ResetATCommand;
 import aconcorrencia.obdsync.command.mode1.commands.AvailablePidsCommand;
+import aconcorrencia.obdsync.command.mode1.commands.RPMCommand;
+
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
@@ -19,6 +21,7 @@ import java.util.UUID;
 public abstract class BluetoothConnectionThread extends Thread{
     private final BluetoothDevice bluetoothDevice;
     private BluetoothSocket bluetoothSocket = null;
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     public BluetoothConnectionThread(final BluetoothDevice bluetoothDevice){
         this.bluetoothDevice = bluetoothDevice;
@@ -42,15 +45,10 @@ public abstract class BluetoothConnectionThread extends Thread{
         onStart();
         try{
             try{
-                bluetoothSocket = bluetoothDevice.createInsecureRfcommSocketToServiceRecord(UUID.randomUUID());
+                bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(MY_UUID);
             }
-            catch(RuntimeException e1){
-                try{
-                    bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(UUID.randomUUID());
-                }
-                catch(RuntimeException e){
-                    throw new IOException(e);
-                }
+            catch(Exception e1){
+                bluetoothSocket = bluetoothDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             }
             bluetoothSocket.connect();
             inputStream = bluetoothSocket.getInputStream();
@@ -60,7 +58,7 @@ public abstract class BluetoothConnectionThread extends Thread{
 
             executer.execute(ResetATCommand.class);
             executer.execute(AutoProtocolATCommand.class);
-            executer.execute(AvailablePidsCommand.class);
+            //executer.execute(RPMCommand.class);
 
             onSuccess(executer);
         }

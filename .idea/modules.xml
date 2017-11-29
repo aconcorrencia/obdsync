@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/obdsync.iml" filepath="$PROJECT_DIR$/obdsync.iml" />
+      <module fileurl="file://C:\Users\Sillas\Documents\A CONC\obdsync-master\app\app.iml" filepath="C:\Users\Sillas\Documents\A CONC\obdsync-master\app\app.iml" />
+      <module fileurl="file://C:\Users\Sillas\Documents\A CONC\obdsync-master\obdsync.iml" filepath="C:\Users\Sillas\Documents\A CONC\obdsync-master\obdsync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/obdsync-master.iml" filepath="$PROJECT_DIR$/obdsync-master.iml" />
     </modules>
   </component>
 </project>
