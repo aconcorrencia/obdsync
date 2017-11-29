@@ -23,6 +23,7 @@ public class OBDSync{
     public OBDSync(Activity activity, BluetoothConnectionHandleable handleable, String bluetoothMACAddress){
         this.activity = activity;
         this.handleable = handleable;
+        this.bluetoothMACAddress = bluetoothMACAddress;
     }
 
     public <T extends Activity & BluetoothConnectionHandleable> OBDSync(T activityBluetoothHandleable, String bluetoothMACAddress){
