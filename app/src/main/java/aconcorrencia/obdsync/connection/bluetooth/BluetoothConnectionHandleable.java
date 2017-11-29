@@ -20,6 +20,9 @@ public interface BluetoothConnectionHandleable {
      */
     void afterBluetoothConnection();
 
+    /**
+     * Depode fe char a conexão
+     */
     void afterBluetoothConnectionClose();
 
     /**

@@ -26,7 +26,6 @@ public class OBDSync{
         this.activity = activity;
         this.handleable = handleable;
         this.bluetoothMACAddress = bluetoothMACAddress;
-        initialize();
     }
 
     public <T extends Activity & BluetoothConnectionHandleable> OBDSync(T activityBluetoothHandleable, String bluetoothMACAddress){
@@ -68,13 +67,23 @@ public class OBDSync{
         if(bluetoothConnectionThread != null){
             bluetoothConnectionThread.cancel();
             bluetoothConnectionThread = null;
+            obdCommandExecuter = null;
         }
+    }
+
+    private void throwThread(final Runnable runnable){
+        Thread timer = new Thread() {
+            public void run() {
+                activity.runOnUiThread(runnable);
+            }
+        };
+        timer.start();
     }
 
     public void initialize(){
         BluetoothDevice bluetoothDevice;
 
-        if(hasBluetoothSupport()){
+        if(!hasBluetoothSupport()){
             handleable.onBluetoothNotSuported();
         }
         if(isBluetoothEnable()){
@@ -95,18 +104,33 @@ public class OBDSync{
 
                     @Override
                     protected void onError(){
-                        handleable.onBluetoothConnectionError();
+                        throwThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleable.onBluetoothConnectionError();
+                            }
+                        });
                     }
 
                     @Override
                     protected void onSuccess(OBDCommandExecuter obdCommandExecuter1){
-                        handleable.afterBluetoothConnection();
+                        throwThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleable.afterBluetoothConnection();
+                            }
+                        });
                         obdCommandExecuter = obdCommandExecuter1;
                     }
 
                     @Override
                     protected void onCancel(){
-                        handleable.afterBluetoothConnectionClose();
+                        throwThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleable.afterBluetoothConnectionClose();
+                            }
+                        });
                     }
                 };
                 bluetoothConnectionThread.start();
