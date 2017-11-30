@@ -1,10 +1,8 @@
 package aconcorrencia.obdsync.connection.bluetooth;
 
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.command.at.commands.AutoProtocolATCommand;
-import aconcorrencia.obdsync.command.at.commands.ResetATCommand;
-import aconcorrencia.obdsync.command.mode1.commands.AvailablePidsCommand;
-import aconcorrencia.obdsync.command.mode1.commands.RPMCommand;
+import aconcorrencia.obdsync.command.at.ATCommandAutoProtocol;
+import aconcorrencia.obdsync.command.at.ATCommandReset;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -56,9 +54,9 @@ public abstract class BluetoothConnectionThread extends Thread{
 
             executer = new OBDCommandExecuter(inputStream,outputStream);
 
-            executer.execute(ResetATCommand.class);
-            executer.execute(AutoProtocolATCommand.class);
-//            executer.execute(RPMCommand.class);
+            executer.execute(ATCommandReset.class);
+            executer.execute(ATCommandAutoProtocol.class);
+//            executer.execute(Mode01CommandRPM.class);
 
             onSuccess(executer);
         }

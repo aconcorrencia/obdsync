@@ -1,5 +1,4 @@
-package aconcorrencia.obdsync.command.mode1.commands;
-
+package aconcorrencia.obdsync.command.mode1;
 
 import aconcorrencia.obdsync.command.mode1.Mode01Command;
 
@@ -9,10 +8,10 @@ import java.util.ArrayList;
  * Created by Sillas on 10/12/2016.
  */
 
-public class AirIntakeTemperatureCommand extends Mode01Command<Float>{
+public class Mode01CommandIntakeManifoldPressure extends Mode01Command<Float>{
 
-    public AirIntakeTemperatureCommand() {
-        super("0F");
+    public Mode01CommandIntakeManifoldPressure() {
+        super("0B");
     }
 
     @Override
@@ -22,6 +21,6 @@ public class AirIntakeTemperatureCommand extends Mode01Command<Float>{
 
     @Override
     protected Float getData(String data, ArrayList<Integer> bytesResult){
-        return bytesResult.get(2) - 40f;
+        return bytesResult.get(2) + 0f;
     }
 }

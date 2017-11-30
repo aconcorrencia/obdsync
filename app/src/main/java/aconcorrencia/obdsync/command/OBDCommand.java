@@ -1,7 +1,5 @@
 package aconcorrencia.obdsync.command;
 
-import android.util.Log;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,7 +10,7 @@ import java.util.regex.Pattern;
  * Created by Yuri on 29/11/2017.
  */
 
-public abstract class OBDCommand<T>{
+public abstract class OBDCommand<returnedCommandType>{
     private static final String COMMAND_BREAKER = "\r";
     private static final char READ_END = '>';
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
@@ -31,8 +29,8 @@ public abstract class OBDCommand<T>{
         return command;
     }
 
-    public abstract T getDefaultData();
-    protected abstract T getData(String data,ArrayList<Integer> bytesResult);
+    public abstract returnedCommandType getDefaultData();
+    protected abstract returnedCommandType getData(String data, ArrayList<Integer> bytesResult);
 
     private static void sendCommand(String command, OutputStream outputStream) throws IOException{
         byte[] commandBytes;
@@ -97,7 +95,7 @@ public abstract class OBDCommand<T>{
         sendCommand(command, outputStream);
     }
 
-    public T execute(OutputStream outputStream, InputStream inputStream) throws IOException{
+    public returnedCommandType execute(OutputStream outputStream, InputStream inputStream) throws IOException{
         String data;
 
         // Somente uma instancia por vez

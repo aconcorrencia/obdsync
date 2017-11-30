@@ -1,5 +1,6 @@
 package aconcorrencia.obdsync.connection;
 
+import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
 import aconcorrencia.obdsync.connection.bluetooth.IBluetoothConnection;
 import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionThread;
@@ -56,11 +57,15 @@ public class OBDSync{
         return getBluetoothAdapter().getRemoteDevice(mac);
     }
 
-    public OBDCommandExecuter getExecuter(){
+    private OBDCommandExecuter getExecuter(){
         if(!isBluetoothConnectionSuccessful()){
             throw new IllegalStateException("Executor não foi iniciado");
         }
         return obdCommandExecuter;
+    }
+
+    public <returnedCommandType> returnedCommandType executeCommand(OBDCommand<returnedCommandType> command){
+        return getExecuter().execute(command);
     }
 
     public void destroy(){

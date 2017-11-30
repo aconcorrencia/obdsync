@@ -1,4 +1,4 @@
-package aconcorrencia.obdsync.command.mode1.commands;
+package aconcorrencia.obdsync.command.mode1;
 
 
 import aconcorrencia.obdsync.command.mode1.Mode01Command;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
  * Created by Sillas on 11/12/2016.
  */
 
-public class SpeedCommand extends Mode01Command<Integer>{
+public class Mode01CommandSpeed extends Mode01Command<Integer>{
     /**
      * Default ctor.
      */
-    public SpeedCommand() {
+    public Mode01CommandSpeed() {
         super("0D");
     }
 

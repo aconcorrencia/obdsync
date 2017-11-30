@@ -1,13 +1,15 @@
 
-package aconcorrencia.obdsync.command.mode1.commands;
+package aconcorrencia.obdsync.command.mode1;
+
 
 import aconcorrencia.obdsync.command.mode1.Mode01Command;
 
 import java.util.ArrayList;
 
-public class RPMCommand extends Mode01Command<Float>{
-    public RPMCommand() {
-        super("0C");
+public class Mode01CommandAbsoluteLoad extends Mode01Command<Float>{
+
+    public Mode01CommandAbsoluteLoad() {
+        super("43");
     }
 
     @Override
@@ -17,6 +19,6 @@ public class RPMCommand extends Mode01Command<Float>{
 
     @Override
     protected Float getData(String data, ArrayList<Integer> bytesResult){
-        return (bytesResult.get(2) * 256 + bytesResult.get(3)) / 4f;
+        return (bytesResult.get(2) * 100.0f) / 255.0f;
     }
 }

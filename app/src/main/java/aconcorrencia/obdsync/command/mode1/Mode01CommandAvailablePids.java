@@ -1,4 +1,4 @@
-package aconcorrencia.obdsync.command.mode1.commands;
+package aconcorrencia.obdsync.command.mode1;
 
 import aconcorrencia.obdsync.command.mode1.Mode01Command;
 import aconcorrencia.obdsync.connection.OBDSync;
@@ -9,8 +9,8 @@ import java.util.ArrayList;
  * Created by Yuri on 29/11/2017.
  */
 
-public class AvailablePidsCommand extends Mode01Command<String>{
-    public AvailablePidsCommand(){
+public class Mode01CommandAvailablePids extends Mode01Command<String>{
+    public Mode01CommandAvailablePids(){
         super("00");
     }
 
