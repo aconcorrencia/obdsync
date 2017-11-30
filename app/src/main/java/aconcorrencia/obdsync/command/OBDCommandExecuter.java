@@ -19,7 +19,14 @@ public class OBDCommandExecuter{
         this.outputStream = outputStream;
     }
 
-    public <T extends OBDCommand<RC>,RC> RC execute(T obdCommand){
+    /**
+     *
+     * @param obdCommand qualquer instancia de OBDCommand
+     * @param <commandType>
+     * @param <returnedCommandType>
+     * @return
+     */
+    public <commandType extends OBDCommand<returnedCommandType>,returnedCommandType> returnedCommandType execute(commandType obdCommand){
         try{
             return obdCommand.execute(outputStream,inputStream);
         }
@@ -30,7 +37,7 @@ public class OBDCommandExecuter{
         return obdCommand.getDefaultData();
     }
 
-    public <T extends Class<? extends OBDCommand<RC>>,RC> RC execute(T obdCommandClass){
+    public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType execute(commandTypeClass obdCommandClass){
         try{
             return execute(obdCommandClass.newInstance());
         }

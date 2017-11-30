@@ -76,6 +76,10 @@ public class OBDSync{
         return getExecuter().execute(command);
     }
 
+    public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType execute(commandTypeClass obdCommandClass){
+        return getExecuter().execute(obdCommandClass);
+    }
+
     /**
      * Cancela a conexão e destroi a instancia de executor
      */
