@@ -2,7 +2,7 @@ package aconcorrencia.obdsync.connection;
 
 import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.connection.bluetooth.IBluetoothConnection;
+import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionListener;
 import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionThread;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -17,20 +17,20 @@ public class OBDSync{
     private static final int REQUEST_ENABLE_BT = 3;
 
     private Activity activity;
-    private IBluetoothConnection handleable;
+    private BluetoothConnectionListener handleable;
     private String bluetoothMACAddress;
 
     private BluetoothConnectionThread bluetoothConnectionThread = null;
     private OBDCommandExecuter obdCommandExecuter = null;
 
-    public OBDSync(Activity activity, IBluetoothConnection iBluetoothConnection, String bluetoothMACAddress){
+    public OBDSync(Activity activity, BluetoothConnectionListener bluetoothConnectionListener, String bluetoothMACAddress){
         this.activity = activity;
-        this.handleable = iBluetoothConnection;
+        this.handleable = bluetoothConnectionListener;
         this.bluetoothMACAddress = bluetoothMACAddress;
     }
 
-    public <T extends Activity & IBluetoothConnection> OBDSync(T activityIBluetoothConnection, String bluetoothMACAddress){
-        this(activityIBluetoothConnection, activityIBluetoothConnection, bluetoothMACAddress);
+    public <T extends Activity & BluetoothConnectionListener> OBDSync(T activityBluetoothConnectionListener, String bluetoothMACAddress){
+        this(activityBluetoothConnectionListener, activityBluetoothConnectionListener, bluetoothMACAddress);
     }
 
     private boolean isBluetoothConnectionInitialized(){
@@ -64,10 +64,21 @@ public class OBDSync{
         return obdCommandExecuter;
     }
 
+    /**
+     * Executa o comando e retorna o dado referente ao seu tipo de retorno
+     * ex: Mode01CommandRPM, tem o retorno do tipo Float, portanto seu retorno será Float,
+     * Mode01CommandSpeed, tem o retorno do tipo Integer, portanto seu retorno será Integer
+     *
+     * @param command
+     * @return <returnedCommandType>
+     */
     public <returnedCommandType> returnedCommandType executeCommand(OBDCommand<returnedCommandType> command){
         return getExecuter().execute(command);
     }
 
+    /**
+     * Cancela a conexão e destroi a instancia de executor
+     */
     public void destroy(){
         if(bluetoothConnectionThread != null){
             bluetoothConnectionThread.cancel();
