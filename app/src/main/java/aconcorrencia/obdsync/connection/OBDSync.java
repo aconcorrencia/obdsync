@@ -1,7 +1,7 @@
 package aconcorrencia.obdsync.connection;
 
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionHandleable;
+import aconcorrencia.obdsync.connection.bluetooth.IBluetoothConnection;
 import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionThread;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -16,20 +16,20 @@ public class OBDSync{
     private static final int REQUEST_ENABLE_BT = 3;
 
     private Activity activity;
-    private BluetoothConnectionHandleable handleable;
+    private IBluetoothConnection handleable;
     private String bluetoothMACAddress;
 
     private BluetoothConnectionThread bluetoothConnectionThread = null;
     private OBDCommandExecuter obdCommandExecuter = null;
 
-    public OBDSync(Activity activity, BluetoothConnectionHandleable handleable, String bluetoothMACAddress){
+    public OBDSync(Activity activity, IBluetoothConnection iBluetoothConnection, String bluetoothMACAddress){
         this.activity = activity;
-        this.handleable = handleable;
+        this.handleable = iBluetoothConnection;
         this.bluetoothMACAddress = bluetoothMACAddress;
     }
 
-    public <T extends Activity & BluetoothConnectionHandleable> OBDSync(T activityBluetoothHandleable, String bluetoothMACAddress){
-        this(activityBluetoothHandleable, activityBluetoothHandleable, bluetoothMACAddress);
+    public <T extends Activity & IBluetoothConnection> OBDSync(T activityIBluetoothConnection, String bluetoothMACAddress){
+        this(activityIBluetoothConnection, activityIBluetoothConnection, bluetoothMACAddress);
     }
 
     private boolean isBluetoothConnectionInitialized(){

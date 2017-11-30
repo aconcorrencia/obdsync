@@ -1,6 +1,7 @@
 package aconcorrencia.obdsync.command.mode1.commands;
 
 import aconcorrencia.obdsync.command.OBDCommand;
+import aconcorrencia.obdsync.command.mode1.Mode01Command;
 
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * Created by Sillas on 11/12/2016.
  */
 
-public class MassAirFlowCommand extends OBDCommand<Float>{
+public class MassAirFlowCommand extends Mode01Command<Float> {
     /**
      * Default ctor.
      */

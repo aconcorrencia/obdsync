@@ -58,7 +58,7 @@ public abstract class BluetoothConnectionThread extends Thread{
 
             executer.execute(ResetATCommand.class);
             executer.execute(AutoProtocolATCommand.class);
-            //executer.execute(RPMCommand.class);
+//            executer.execute(RPMCommand.class);
 
             onSuccess(executer);
         }

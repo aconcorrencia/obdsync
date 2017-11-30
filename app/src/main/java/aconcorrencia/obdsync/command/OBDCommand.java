@@ -27,6 +27,10 @@ public abstract class OBDCommand<T>{
         this.command = command;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
     public abstract T getDefaultData();
     protected abstract T getData(String data,ArrayList<Integer> bytesResult);
 

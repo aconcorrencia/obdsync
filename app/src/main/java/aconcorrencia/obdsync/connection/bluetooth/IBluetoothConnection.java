@@ -4,7 +4,7 @@ package aconcorrencia.obdsync.connection.bluetooth;
  * Created by Yuri on 29/11/2017.
  */
 
-public interface BluetoothConnectionHandleable {
+public interface IBluetoothConnection {
     /**
      * Quando há erro na conexão
      */

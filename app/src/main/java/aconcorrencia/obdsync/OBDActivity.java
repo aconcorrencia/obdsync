@@ -1,8 +1,9 @@
 package aconcorrencia.obdsync;
 
-import aconcorrencia.obdsync.command.mode1.commands.RPMCommand;
+import aconcorrencia.obdsync.command.OBDCommand;
+import aconcorrencia.obdsync.command.mode1.commands.*;
 import aconcorrencia.obdsync.connection.OBDSync;
-import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionHandleable;
+import aconcorrencia.obdsync.connection.bluetooth.IBluetoothConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,13 @@ import aconcorrencia.obdsync.Adapter.RecyclerViewOnClickListenerHack;
 
 import java.util.ArrayList;
 
-public class OBDActivity extends AppCompatActivity implements RecyclerViewOnClickListenerHack,BluetoothConnectionHandleable {
+public class OBDActivity extends AppCompatActivity implements RecyclerViewOnClickListenerHack,IBluetoothConnection {
 
     protected RecyclerView mRecyclerView;
     private boolean animation = true;
     private ImageView imgEngine;
     private OBDSync sync;
-
+    private String mac;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -39,26 +40,36 @@ public class OBDActivity extends AppCompatActivity implements RecyclerViewOnClic
         mRecyclerView.setLayoutManager(llm);
         sharedPreferences = getSharedPreferences("Preferences", MODE_PRIVATE);
         String mac= sharedPreferences.getString("addressDevice", "");
-        sync = new OBDSync(this, mac);
-        sync.initialize();
+
+        showListView();
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //...
+
+//        sync.initialize();
+
+        //...
+    }
 
     /***
      * Preenche a ListView
      */
     private void showListView() {
-        ArrayList<ListViewObj> mlistViewObjs = new ArrayList<>();
-        /*mlistViewObjs.add(new ListViewObj("PIDs supported [01 - 20]", "Mostra uma lista dos PIDs suportados pelo veículo de 01 a 20"));
-        mlistViewObjs.add(new ListViewObj("PIDs supported [21 - 40]", "Mostra uma lista dos PIDs suportados pelo veículo de 21 a 40"));
-        mlistViewObjs.add(new ListViewObj("PIDs supported [41 - 60]", "Mostra uma lista dos PIDs suportados pelo veículo de 21 a 40"));*/
-        //mlistViewObjs.add(new ListViewObj("Informações","Informações Gerais"));
-        mlistViewObjs.add(new ListViewObj("AirIntakeTemperatureCommand", ""));
-        mlistViewObjs.add(new ListViewObj("AvailablePidsCommand_01_20", ""));
-        mlistViewObjs.add(new ListViewObj("RPMCommand", ""));
-        mlistViewObjs.add(new ListViewObj("Consumption", ""));
-        mlistViewObjs.add(new ListViewObj("MassAirFlowCommand", ""));
-        ListViewAdapter adapter = new ListViewAdapter(OBDActivity.this, mlistViewObjs);
+
+        ArrayList<ListViewObj> intens = new ArrayList<>();
+        intens.add(new ListViewObj("Air Intake Temperature", new AirIntakeTemperatureCommand().getCommand()));
+        intens.add(new ListViewObj("Intake Manifold Pressure", new IntakeManifoldPressureCommand().getCommand()));
+        intens.add(new ListViewObj("Mass Air flow", new MassAirFlowCommand().getCommand()));
+        intens.add(new ListViewObj("Absolute Load", new AbsoluteLoadCommand().getCommand()));
+        intens.add(new ListViewObj("RPM", new AbsoluteLoadCommand().getCommand()));
+        intens.add(new ListViewObj("Speed", new SpeedCommand().getCommand()));
+
+        ListViewAdapter adapter = new ListViewAdapter(OBDActivity.this, intens);
         adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setClickable(false);
         mRecyclerView.setAdapter(adapter);

@@ -1,6 +1,7 @@
 package aconcorrencia.obdsync.command.mode1.commands;
 
 import aconcorrencia.obdsync.command.mode1.Mode01Command;
+import aconcorrencia.obdsync.connection.OBDSync;
 
 import java.util.ArrayList;
 
