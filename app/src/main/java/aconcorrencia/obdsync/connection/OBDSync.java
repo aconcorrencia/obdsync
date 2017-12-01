@@ -17,7 +17,7 @@ public class OBDSync{
     private static final int REQUEST_ENABLE_BT = 3;
 
     private Activity activity;
-    private BluetoothConnectionListener handleable;
+    private BluetoothConnectionListener listener;
     private String bluetoothMACAddress;
 
     private BluetoothConnectionThread bluetoothConnectionThread = null;
@@ -25,7 +25,7 @@ public class OBDSync{
 
     public OBDSync(Activity activity, BluetoothConnectionListener bluetoothConnectionListener, String bluetoothMACAddress){
         this.activity = activity;
-        this.handleable = bluetoothConnectionListener;
+        this.listener = bluetoothConnectionListener;
         this.bluetoothMACAddress = bluetoothMACAddress;
     }
 
@@ -78,14 +78,13 @@ public class OBDSync{
     }
 
     /**
-     * Executa o comando e retorna o dado referente ao seu tipo de retorno
      *
      * @param obdCommandClass
-     * @param <commandTypeClass>
+     * @param <commandClass>
      * @param <returnedCommandType>
      * @return returnedCommandType
      */
-    public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType executeCommand(commandTypeClass obdCommandClass){
+    public <commandClass extends OBDCommand<returnedCommandType>,returnedCommandType> returnedCommandType executeCommand(Class<commandClass> obdCommandClass){
         return getExecuter().execute(obdCommandClass);
     }
 
@@ -113,11 +112,11 @@ public class OBDSync{
         BluetoothDevice bluetoothDevice;
 
         if(!hasBluetoothSupport()){
-            handleable.onBluetoothNotSuported();
+            listener.onBluetoothNotSuported();
         }
         if(isBluetoothEnable()){
             if(!isBluetoothConnectionInitialized()){
-                handleable.beforeBluetoothConnection();
+                listener.beforeBluetoothConnection();
                 bluetoothDevice = getBluetoothDevice(bluetoothMACAddress);
 
                 bluetoothConnectionThread = new BluetoothConnectionThread(bluetoothDevice){
@@ -136,7 +135,7 @@ public class OBDSync{
                         throwThread(new Runnable() {
                             @Override
                             public void run() {
-                                handleable.onBluetoothConnectionError();
+                                listener.onBluetoothConnectionError();
                             }
                         });
                     }
@@ -146,7 +145,7 @@ public class OBDSync{
                         throwThread(new Runnable() {
                             @Override
                             public void run() {
-                                handleable.afterBluetoothConnection();
+                                listener.afterBluetoothConnection();
                             }
                         });
                         obdCommandExecuter = obdCommandExecuter1;
@@ -157,7 +156,7 @@ public class OBDSync{
                         throwThread(new Runnable() {
                             @Override
                             public void run() {
-                                handleable.afterBluetoothConnectionClose();
+                                listener.afterBluetoothConnectionClose();
                             }
                         });
                     }
@@ -170,7 +169,7 @@ public class OBDSync{
             }
         }
 //        else{
-//            handleable.onBluetoothNotSuported();
+//            listener.onBluetoothNotSuported();
 //        }
     }
 }

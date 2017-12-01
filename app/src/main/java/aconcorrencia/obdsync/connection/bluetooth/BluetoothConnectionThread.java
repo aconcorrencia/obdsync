@@ -19,7 +19,6 @@ import java.util.UUID;
 public abstract class BluetoothConnectionThread extends Thread{
     private final BluetoothDevice bluetoothDevice;
     private BluetoothSocket bluetoothSocket = null;
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     protected BluetoothConnectionThread(final BluetoothDevice bluetoothDevice){
         this.bluetoothDevice = bluetoothDevice;
@@ -39,6 +38,7 @@ public abstract class BluetoothConnectionThread extends Thread{
         InputStream inputStream;
         OutputStream outputStream;
         OBDCommandExecuter executer;
+        final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
         onStart();
         try{

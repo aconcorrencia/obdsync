@@ -1,7 +1,5 @@
 package aconcorrencia.obdsync.command;
 
-import aconcorrencia.obdsync.command.OBDCommand;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,10 +19,10 @@ public class OBDCommandExecuter{
 
     /**
      *
-     * @param obdCommand qualquer instancia de OBDCommand
+     * @param obdCommand
      * @param <commandType>
      * @param <returnedCommandType>
-     * @return
+     * @return returnedCommandType
      */
     public <commandType extends OBDCommand<returnedCommandType>,returnedCommandType> returnedCommandType execute(commandType obdCommand){
         try{
@@ -37,6 +35,13 @@ public class OBDCommandExecuter{
         return obdCommand.getDefaultData();
     }
 
+    /**
+     *
+     * @param obdCommandClass
+     * @param <commandTypeClass>
+     * @param <returnedCommandType>
+     * @return returnedCommandType
+     */
     public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType execute(commandTypeClass obdCommandClass){
         try{
             return execute(obdCommandClass.newInstance());
