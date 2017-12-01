@@ -2,6 +2,7 @@ package aconcorrencia.obdsync;
 
 import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
+import aconcorrencia.obdsync.command.mode1.Mode01CommandAbsoluteLoad;
 import aconcorrencia.obdsync.connection.BluetoothConnectionListener;
 import aconcorrencia.obdsync.connection.BluetoothConnectionThread;
 import android.app.Activity;
@@ -16,7 +17,6 @@ import android.content.Intent;
 public class OBDSync{
     private Activity activity;
     private BluetoothConnectionListener listener;
-    private String bluetoothMACAddress;
 
     private BluetoothConnectionThread bluetoothConnectionThread = null;
     private OBDCommandExecuter obdCommandExecuter = null;
@@ -24,25 +24,22 @@ public class OBDSync{
     /**
      * @param activity                    Atividade em qual o contexto da chamda é feito
      * @param bluetoothConnectionListener Responsavel pela chamada de metodos ciclo de vida da conexão bluetooth {@link BluetoothConnectionListener}
-     * @param bluetoothMACAddress         Endereço de MAC do bluetooth
      *
      * @see BluetoothConnectionListener
      */
-    public OBDSync(Activity activity, BluetoothConnectionListener bluetoothConnectionListener, String bluetoothMACAddress){
+    public OBDSync(Activity activity, BluetoothConnectionListener bluetoothConnectionListener){
         this.activity = activity;
         this.listener = bluetoothConnectionListener;
-        this.bluetoothMACAddress = bluetoothMACAddress;
     }
 
     /**
      * @param activityBluetoothConnectionListener Atividade que tem a responsabilidade dos metodos do ciclo de vida da conexão bluetooth {@link BluetoothConnectionListener}
-     * @param bluetoothMACAddress                 Endereço de MAC do bluetooth
      * @param <ActivityBluetoothListener>         Tipo em que é uma {@link Activity} e implementa {@link BluetoothConnectionListener}
      *
      * @see BluetoothConnectionListener
      */
-    public <ActivityBluetoothListener extends Activity & BluetoothConnectionListener> OBDSync(ActivityBluetoothListener activityBluetoothConnectionListener, String bluetoothMACAddress){
-        this(activityBluetoothConnectionListener, activityBluetoothConnectionListener, bluetoothMACAddress);
+    public <ActivityBluetoothListener extends Activity & BluetoothConnectionListener> OBDSync(ActivityBluetoothListener activityBluetoothConnectionListener){
+        this(activityBluetoothConnectionListener, activityBluetoothConnectionListener);
     }
 
     /**
@@ -154,14 +151,14 @@ public class OBDSync{
      * <p>Mode01CommandSpeed extends Mode01Command<Integer>, tem o retorno do tipo Integer, portanto seu retorno será Integer</p>
      *
      * @param command Instancia de {@link OBDCommand}
-     * @param <dataType> Tipo de dado a ser retornado em sua execução
+     * @param <DataType> Tipo de dado a ser retornado em sua execução
      *
      * @return Data do tipo descrito em #command
      *
      * @see OBDCommandExecuter#execute(OBDCommand)
      * @see OBDCommandExecuter#execute(Class)
      */
-    public <dataType> dataType executeCommand(OBDCommand<dataType> command){
+    public <DataType> DataType executeCommand(OBDCommand<DataType> command){
         return getExecuter().execute(command);
     }
 
@@ -172,14 +169,14 @@ public class OBDSync{
      * <p>Mode01CommandSpeed extends Mode01Command<Integer>, tem o retorno do tipo Integer, portanto seu retorno será Integer</p>
      *
      * @param obdCommandClass {@link Class} de algum {@link OBDCommand}
-     * @param <dataType> Tipo de dado a ser retornado em sua execução
+     * @param <DataType> Tipo de dado a ser retornado em sua execução
      *
      * @return Data do tipo descrito em #command
      *
      * @see OBDCommandExecuter#execute(OBDCommand)
      * @see OBDCommandExecuter#execute(Class)
      */
-    public <dataType, obdCommandSubType extends OBDCommand<dataType>> dataType executeCommand(Class<obdCommandSubType> obdCommandClass){
+    public <DataType, OBDCommandSubType extends OBDCommand<DataType>> DataType executeCommand(Class<OBDCommandSubType> obdCommandClass){
         return getExecuter().execute(obdCommandClass);
     }
 
@@ -212,7 +209,7 @@ public class OBDSync{
         if(isBluetoothEnable()){
             if(!isBluetoothConnectionInitialized()){
                 listener.beforeBluetoothConnection();
-                bluetoothDevice = getBluetoothDevice(bluetoothMACAddress);
+                bluetoothDevice = getBluetoothDevice(listener.getBluetoothMACAddress());
 
                 bluetoothConnectionThread = new BluetoothConnectionThread(bluetoothDevice){
                     @Override

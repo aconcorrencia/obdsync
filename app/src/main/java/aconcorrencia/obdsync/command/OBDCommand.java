@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Created by Yuri on 29/11/2017.
  */
 
-public abstract class OBDCommand<dataType>{
+public abstract class OBDCommand<DataType>{
     private static final String COMMAND_BREAKER = "\r";
     private static final char READ_END = '>';
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
@@ -45,11 +45,11 @@ public abstract class OBDCommand<dataType>{
     /**
      * Data padrão caso não seja possivel enviar o comando
      *
-     * @return data padrão do tipo definido em dataType
+     * @return data padrão do tipo definido em DataType
      *
      * @see #execute(OutputStream, InputStream)
      */
-    protected abstract dataType getDefaultData();
+    protected abstract DataType getDefaultData();
 
     /**
      * Obter data que sera retornada como resposta apos a execução do comando
@@ -64,7 +64,7 @@ public abstract class OBDCommand<dataType>{
      * @see OBDCommandExecuter#execute(Class)
      * @see OBDCommandExecuter#execute(OBDCommand)
      */
-    protected abstract dataType getDataResponse(ArrayList<Integer> bytesValue);
+    protected abstract DataType getDataResponse(ArrayList<Integer> bytesValue);
 
     /**
      * Obtem o Arraylist referente a {@link #lastData} caso {@link #notConvertData()} retorne false
@@ -163,13 +163,13 @@ public abstract class OBDCommand<dataType>{
      * @param outputStream OutputStream do socket onde sera enviado o comando
      * @param inputStream  InputStram do socket onde sera retornada a resposta
      *
-     * @return data do tipo definido no dataType
+     * @return data do tipo definido no DataType
      *
      * @throws IOException Lancado por {@link #send(OutputStream)} e {@link #read(InputStream)}
      * @see OBDCommandExecuter#execute(OBDCommand)
      * @see OBDCommandExecuter#execute(Class)
      */
-    public dataType execute(OutputStream outputStream, InputStream inputStream) throws IOException{
+    public DataType execute(OutputStream outputStream, InputStream inputStream) throws IOException{
         // Somente uma instancia por vez
         synchronized(OBDCommand.class){
             send(outputStream);

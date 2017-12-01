@@ -27,9 +27,9 @@ public class OBDCommandExecuter{
     /**
      * Executor de {@link OBDCommand} via instancia
      *
-     * @param obdCommand          Alguma instancia de <obdCommandSubType>
-     * @param <dataType>          Tipo de retorno definido em {@link OBDCommand}
-     * @param <obdCommandSubType> Tipo ao qual extende {@link OBDCommand}
+     * @param obdCommand          Alguma instancia de <OBDCommandSubType>
+     * @param <DataType>          Tipo de retorno definido em {@link OBDCommand}
+     * @param <OBDCommandSubType> Tipo ao qual extende {@link OBDCommand}
      *
      * @return Será o mesmo tipo retornado por {@link OBDCommand#execute(OutputStream, InputStream)}
      *
@@ -38,7 +38,7 @@ public class OBDCommandExecuter{
      * @see OBDCommand#getDataResponse(ArrayList) ()
      * @see OBDCommand#execute(OutputStream, InputStream)
      */
-    public <dataType, obdCommandSubType extends OBDCommand<dataType>> dataType execute(obdCommandSubType obdCommand){
+    public <DataType, OBDCommandSubType extends OBDCommand<DataType>> DataType execute(OBDCommandSubType obdCommand){
         try{
             return obdCommand.execute(outputStream, inputStream);
         }
@@ -52,9 +52,9 @@ public class OBDCommandExecuter{
     /**
      * Executor de {@link OBDCommand} via classe
      *
-     * @param obdCommandClass     Alguma subclasse de <obdCommandSubType>
-     * @param <dataType>          Tipo retorno definido em {@link OBDCommand}
-     * @param <obdCommandSubType> Tipo ao qual extende {@link OBDCommand}
+     * @param obdCommandClass     Alguma subclasse de <OBDCommandSubType>
+     * @param <DataType>          Tipo retorno definido em {@link OBDCommand}
+     * @param <OBDCommandSubType> Tipo ao qual extende {@link OBDCommand}
      *
      * @return Será o mesmo tipo retornado por {@link OBDCommand#execute(OutputStream, InputStream)}
      *
@@ -63,7 +63,7 @@ public class OBDCommandExecuter{
      * @see OBDCommand#getDataResponse(ArrayList) ()
      * @see OBDCommand#execute(OutputStream, InputStream)
      */
-    public <dataType, obdCommandSubType extends OBDCommand<dataType>> dataType execute(Class<obdCommandSubType> obdCommandClass){
+    public <DataType, OBDCommandSubType extends OBDCommand<DataType>> DataType execute(Class<OBDCommandSubType> obdCommandClass){
         try{
             return execute(obdCommandClass.newInstance());
         }
