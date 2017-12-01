@@ -14,8 +14,6 @@ import android.content.Intent;
  */
 
 public class OBDSync{
-    private static final int REQUEST_ENABLE_BT = 3;
-
     private Activity activity;
     private BluetoothConnectionListener listener;
     private String bluetoothMACAddress;
@@ -110,6 +108,7 @@ public class OBDSync{
 
     public void initialize(){
         BluetoothDevice bluetoothDevice;
+        final int REQUEST_ENABLE_BT = 3;
 
         if(!hasBluetoothSupport()){
             listener.onBluetoothNotSuported();
