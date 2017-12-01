@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Created by Yuri on 29/11/2017.
  */
 
-public abstract class OBDCommand<returnedCommandType>{
+public abstract class OBDCommand<dataType>{
     private static final String COMMAND_BREAKER = "\r";
     private static final char READ_END = '>';
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
@@ -18,20 +18,21 @@ public abstract class OBDCommand<returnedCommandType>{
     private static final Pattern SEARCHING_PATTERN = Pattern.compile("SEARCHING");
     private static final Pattern DIGITS_LETTERS_PATTERN = Pattern.compile("([0-9A-F])+");
 
-    private ArrayList<Integer> bytesResult = new ArrayList<>();
     private String command;
+    private String lastData;
 
-    public OBDCommand(String command){
+    protected OBDCommand(String command){
         this.command = command;
     }
 
-    public String getCommand() {
-        return command;
-    }
-
-    public abstract returnedCommandType getDefaultData();
-    protected abstract returnedCommandType getData(String data, ArrayList<Integer> bytesResult);
-
+    /**
+     * Envia um comando para o Outpustram do socket
+     *
+     * @param command      Comando a ser enviado
+     * @param outputStream Outpustream do socket no qual o comando sera enviado
+     *
+     * @throws IOException Lançado pelos metodos {@link OutputStream#write(int)} e {@link OutputStream#flush()}
+     */
     private static void sendCommand(String command, OutputStream outputStream) throws IOException{
         byte[] commandBytes;
 
@@ -41,69 +42,140 @@ public abstract class OBDCommand<returnedCommandType>{
         outputStream.flush();
     }
 
-    protected boolean noData(){
-        return false;
+    /**
+     * Data padrão caso não seja possivel enviar o comando
+     *
+     * @return data padrão do tipo definido em dataType
+     *
+     * @see #execute(OutputStream, InputStream)
+     */
+    protected abstract dataType getDefaultData();
+
+    /**
+     * Obter data que sera retornada como resposta apos a execução do comando
+     *
+     * @param bytesValue ArrayList contendo os bytes em Integer
+     *
+     * @return data usada na resposta de {@link #execute(OutputStream, InputStream)}
+     *
+     * @see #getBytesValue()
+     * @see #execute(OutputStream, InputStream)
+     * @see OBDCommandExecuter
+     * @see OBDCommandExecuter#execute(Class)
+     * @see OBDCommandExecuter#execute(OBDCommand)
+     */
+    protected abstract dataType getDataResponse(ArrayList<Integer> bytesValue);
+
+    /**
+     * Obtem o Arraylist referente a {@link #lastData} caso {@link #notConvertData()} retorne false
+     *
+     * @return Lista de bytes, cada item é um byte com seu valor em Integer
+     */
+    private ArrayList<Integer> getBytesValue(){
+        ArrayList<Integer> bytes;
+
+        bytes = new ArrayList<>();
+
+        if(notConvertData()){
+            return null;
+        }
+        bytes.clear();
+        int begin = 0;
+        int end = 2;
+        while(end <= lastData.length()){
+            String byteString = lastData.substring(begin, end);
+            bytes.add(Integer.decode("0x" + byteString));
+            begin = end;
+            end += 2;
+        }
+
+        return bytes;
     }
 
-    protected String read(InputStream inputStream) throws IOException{
+    /**
+     * Faz a leitura do que há disponivel no InputStream do socket, ate alcançar o fim ou no marcador {@link #READ_END}
+     * A leitura é feita, sendo removido os padrões {@link #SEARCHING_PATTERN}, {@link #WHITESPACE_PATTERN} e {@link #BUSINIT_PATTERN}
+     *
+     * @param inputStream InputStream do socket no qual sera feito a leitura da resposta
+     *
+     * @throws IOException Lançada por {@link InputStream#read()}
+     */
+    private void read(InputStream inputStream) throws IOException{
         byte b;
         StringBuilder stringBuilder;
-        String data;
 
         stringBuilder = new StringBuilder();
 
-        // read until '>' arrives OR end of stream reached
-        char c;
         // -1 if the end of the stream is reached
         while((b = (byte) inputStream.read()) > -1){
-            c = (char) b;
+            char c = (char) b;
             if(c == READ_END){
                 break;
             }
             stringBuilder.append(c);
         }
 
-        data = stringBuilder.toString();
+        lastData = stringBuilder.toString();
 
-        data = SEARCHING_PATTERN.matcher(data).replaceAll("");
-        data = WHITESPACE_PATTERN.matcher(data).replaceAll("");
-        data = BUSINIT_PATTERN.matcher(data).replaceAll("");
+        lastData = SEARCHING_PATTERN.matcher(lastData).replaceAll("");
+        lastData = WHITESPACE_PATTERN.matcher(lastData).replaceAll("");
+        lastData = BUSINIT_PATTERN.matcher(lastData).replaceAll("");
 
-        if(!DIGITS_LETTERS_PATTERN.matcher(data).matches()){
-            //  throw new NonNumericResponseException(rawData);
+        if(!DIGITS_LETTERS_PATTERN.matcher(lastData).matches()){
+            throw new NumberFormatException(lastData);
         }
-
-        if(noData()){
-            return null;
-        }
-
-        // read string each two chars
-        bytesResult.clear();
-        int begin = 0;
-        int end = 2;
-        while(end <= data.length()){
-            String byteString = data.substring(begin, end);
-            bytesResult.add(Integer.decode("0x" + byteString));
-            begin = end;
-            end += 2;
-        }
-
-        return data;
     }
 
+    /**
+     * Envia o comando no OutputStream do socket
+     *
+     * @param outputStream OutputStram no qual o comando sera enviado
+     *
+     * @throws IOException Lançado por {@link #sendCommand(String, OutputStream)}
+     * @see #sendCommand(String, OutputStream)
+     */
     private void send(OutputStream outputStream) throws IOException{
         sendCommand(command, outputStream);
     }
 
-    public returnedCommandType execute(OutputStream outputStream, InputStream inputStream) throws IOException{
-        String data;
+    /**
+     * Se é necessario fazer fazer a conversão de {@link #lastData} em {@link #getBytesValue()}
+     * Somente deve ser sobrescrita se o comando não precisa, ou não deve fazer a conversão
+     *
+     * @return se sera feito a conversão
+     */
+    protected boolean notConvertData(){
+        return false;
+    }
 
+    /**
+     * Obter comando
+     *
+     * @return obtem o comando
+     */
+    public String getCommand(){
+        return command;
+    }
+
+    /**
+     * Envia o comando para o OutputStream e faz a respectiva leitura do InputStream
+     *
+     * @param outputStream OutputStream do socket onde sera enviado o comando
+     * @param inputStream  InputStram do socket onde sera retornada a resposta
+     *
+     * @return data do tipo definido no dataType
+     *
+     * @throws IOException Lancado por {@link #send(OutputStream)} e {@link #read(InputStream)}
+     * @see OBDCommandExecuter#execute(OBDCommand)
+     * @see OBDCommandExecuter#execute(Class)
+     */
+    public dataType execute(OutputStream outputStream, InputStream inputStream) throws IOException{
         // Somente uma instancia por vez
         synchronized(OBDCommand.class){
             send(outputStream);
-            data = read(inputStream);
+            read(inputStream);
         }
 
-        return getData(data,bytesResult);
+        return getDataResponse(getBytesValue());
     }
 }

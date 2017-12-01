@@ -1,8 +1,6 @@
 package aconcorrencia.obdsync.command.mode1;
 
 
-import aconcorrencia.obdsync.command.mode1.Mode01Command;
-
 import java.util.ArrayList;
 
 /**
@@ -10,20 +8,17 @@ import java.util.ArrayList;
  */
 
 public class Mode01CommandSpeed extends Mode01Command<Integer>{
-    /**
-     * Default ctor.
-     */
-    public Mode01CommandSpeed() {
+    public Mode01CommandSpeed(){
         super("0D");
+    }
+
+    @Override
+    protected Integer getDataResponse(ArrayList<Integer> bytesResult){
+        return bytesResult.get(2);
     }
 
     @Override
     public Integer getDefaultData(){
         return null;
-    }
-
-    @Override
-    protected Integer getData(String data, ArrayList<Integer> bytesResult){
-        return bytesResult.get(2);
     }
 }

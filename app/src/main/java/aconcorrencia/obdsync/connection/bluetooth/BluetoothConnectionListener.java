@@ -21,7 +21,7 @@ public interface BluetoothConnectionListener {
     void afterBluetoothConnection();
 
     /**
-     * Depode fe char a conexão
+     * Depode fechar a conexão
      */
     void afterBluetoothConnectionClose();
 

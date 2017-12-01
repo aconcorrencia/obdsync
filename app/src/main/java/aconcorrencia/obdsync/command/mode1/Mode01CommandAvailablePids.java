@@ -1,8 +1,5 @@
 package aconcorrencia.obdsync.command.mode1;
 
-import aconcorrencia.obdsync.command.mode1.Mode01Command;
-import aconcorrencia.obdsync.connection.OBDSync;
-
 import java.util.ArrayList;
 
 /**
@@ -20,7 +17,7 @@ public class Mode01CommandAvailablePids extends Mode01Command<String>{
     }
 
     @Override
-    protected String getData(String data, ArrayList<Integer> bytesResult){
+    protected String getDataResponse(ArrayList<Integer> bytesResult){
         return null;
     }
 }
