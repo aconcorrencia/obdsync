@@ -66,17 +66,26 @@ public class OBDSync{
 
     /**
      * Executa o comando e retorna o dado referente ao seu tipo de retorno
-     * ex: Mode01CommandRPM, tem o retorno do tipo Float, portanto seu retorno será Float,
-     * Mode01CommandSpeed, tem o retorno do tipo Integer, portanto seu retorno será Integer
+     *  ex: Mode01CommandRPM, tem o retorno do tipo Float, portanto seu retorno será Float,
+     *      Mode01CommandSpeed, tem o retorno do tipo Integer, portanto seu retorno será Integer
      *
      * @param command
-     * @return <returnedCommandType>
+     * @param <returnedCommandType>
+     * @return returnedCommandType
      */
     public <returnedCommandType> returnedCommandType executeCommand(OBDCommand<returnedCommandType> command){
         return getExecuter().execute(command);
     }
 
-    public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType execute(commandTypeClass obdCommandClass){
+    /**
+     * Executa o comando e retorna o dado referente ao seu tipo de retorno
+     *
+     * @param obdCommandClass
+     * @param <commandTypeClass>
+     * @param <returnedCommandType>
+     * @return returnedCommandType
+     */
+    public <commandTypeClass extends Class<? extends OBDCommand<returnedCommandType>>,returnedCommandType> returnedCommandType executeCommand(commandTypeClass obdCommandClass){
         return getExecuter().execute(obdCommandClass);
     }
 

@@ -21,7 +21,7 @@ public abstract class BluetoothConnectionThread extends Thread{
     private BluetoothSocket bluetoothSocket = null;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    public BluetoothConnectionThread(final BluetoothDevice bluetoothDevice){
+    protected BluetoothConnectionThread(final BluetoothDevice bluetoothDevice){
         this.bluetoothDevice = bluetoothDevice;
     }
 
