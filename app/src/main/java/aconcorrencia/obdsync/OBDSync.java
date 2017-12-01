@@ -1,9 +1,9 @@
-package aconcorrencia.obdsync.connection;
+package aconcorrencia.obdsync;
 
 import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionListener;
-import aconcorrencia.obdsync.connection.bluetooth.BluetoothConnectionThread;
+import aconcorrencia.obdsync.connection.BluetoothConnectionListener;
+import aconcorrencia.obdsync.connection.BluetoothConnectionThread;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

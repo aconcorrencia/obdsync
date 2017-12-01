@@ -1,4 +1,4 @@
-package aconcorrencia.obdsync.connection.bluetooth;
+package aconcorrencia.obdsync.connection;
 
 /**
  * Created by Yuri on 29/11/2017.

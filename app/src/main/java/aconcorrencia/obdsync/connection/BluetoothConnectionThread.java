@@ -1,4 +1,4 @@
-package aconcorrencia.obdsync.connection.bluetooth;
+package aconcorrencia.obdsync.connection;
 
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
 import aconcorrencia.obdsync.command.at.ATCommandAutoProtocol;
