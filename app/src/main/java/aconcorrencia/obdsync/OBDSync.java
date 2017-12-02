@@ -149,7 +149,7 @@ public class OBDSync{
      * <p>Mode01CommandRPM extends Mode01Command<Float>, tem o retorno do tipo Float, portanto seu retorno será Float</p>
      * <p>Mode01CommandSpeed extends Mode01Command<Integer>, tem o retorno do tipo Integer, portanto seu retorno será Integer</p>
      *
-     * @param command Instancia de {@link OBDCommand}
+     * @param command    Instancia de {@link OBDCommand}
      * @param <DataType> Tipo de dado a ser retornado em sua execução
      *
      * @return Data do tipo descrito em #command
@@ -168,7 +168,7 @@ public class OBDSync{
      * <p>Mode01CommandSpeed extends Mode01Command<Integer>, tem o retorno do tipo Integer, portanto seu retorno será Integer</p>
      *
      * @param obdCommandClass {@link Class} de algum {@link OBDCommand}
-     * @param <DataType> Tipo de dado a ser retornado em sua execução
+     * @param <DataType>      Tipo de dado a ser retornado em sua execução
      *
      * @return Data do tipo descrito em #command
      *
