@@ -121,9 +121,9 @@ public abstract class OBDCommand<DataType>{
         lastData = WHITESPACE_PATTERN.matcher(lastData).replaceAll("");
         lastData = BUSINIT_PATTERN.matcher(lastData).replaceAll("");
 
-        if(!DIGITS_LETTERS_PATTERN.matcher(lastData).matches()){
-            throw new NumberFormatException(lastData);
-        }
+//        if(!DIGITS_LETTERS_PATTERN.matcher(lastData).matches()){
+//            throw new NumberFormatException(lastData);
+//        }
     }
 
     /**

@@ -2,7 +2,6 @@ package aconcorrencia.obdsync;
 
 import aconcorrencia.obdsync.command.OBDCommand;
 import aconcorrencia.obdsync.command.OBDCommandExecuter;
-import aconcorrencia.obdsync.command.mode1.Mode01CommandAbsoluteLoad;
 import aconcorrencia.obdsync.connection.BluetoothConnectionListener;
 import aconcorrencia.obdsync.connection.BluetoothConnectionThread;
 import android.app.Activity;
