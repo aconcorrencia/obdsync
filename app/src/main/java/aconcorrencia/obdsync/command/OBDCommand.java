@@ -22,6 +22,10 @@ public abstract class OBDCommand<DataType>{
     private String command;
     private String lastData;
 
+    public String getLastData(){
+        return lastData;
+    }
+
     protected OBDCommand(String command){
         this.command = command;
     }
