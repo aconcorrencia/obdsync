@@ -174,8 +174,8 @@ public abstract class OBDCommand<DataType>{
         synchronized(OBDCommand.class){
             send(outputStream);
             read(inputStream);
-        }
 
-        return getDataResponse(getBytesValue());
+            return getDataResponse(getBytesValue());
+        }
     }
 }
