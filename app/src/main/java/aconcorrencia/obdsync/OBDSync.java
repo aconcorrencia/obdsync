@@ -223,36 +223,36 @@ public class OBDSync{
 
                     @Override
                     protected void onError(){
-                        listener.onBluetoothConnectionError();
-//                        throwThread(new Runnable(){
-//                            @Override
-//                            public void run(){
-//                                listener.onBluetoothConnectionError();
-//                            }
-//                        });
+//                        listener.onBluetoothConnectionError();
+                        throwThread(new Runnable(){
+                            @Override
+                            public void run(){
+                                listener.onBluetoothConnectionError();
+                            }
+                        });
                     }
 
                     @Override
                     protected void onSuccess(OBDCommandExecuter obdCommandExecuter1){
-                        listener.afterBluetoothConnection();
-//                        throwThread(new Runnable(){
-//                            @Override
-//                            public void run(){
-//                                listener.afterBluetoothConnection();
-//                            }
-//                        });
-//                        obdCommandExecuter = obdCommandExecuter1;
+//                        listener.afterBluetoothConnection();
+                        throwThread(new Runnable(){
+                            @Override
+                            public void run(){
+                                listener.afterBluetoothConnection();
+                            }
+                        });
+                        obdCommandExecuter = obdCommandExecuter1;
                     }
 
                     @Override
                     protected void onCancel(){
-                        listener.afterBluetoothConnectionClose();
-//                        throwThread(new Runnable(){
-//                            @Override
-//                            public void run(){
-//                                listener.afterBluetoothConnectionClose();
-//                            }
-//                        });
+//                        listener.afterBluetoothConnectionClose();
+                        throwThread(new Runnable(){
+                            @Override
+                            public void run(){
+                                listener.afterBluetoothConnectionClose();
+                            }
+                        });
                     }
                 };
                 bluetoothConnectionThread.start();
