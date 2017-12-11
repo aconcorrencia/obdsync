@@ -4,6 +4,9 @@ package aconcorrencia.obdsync.connection;
  * Created by Yuri on 29/11/2017.
  */
 
+/**
+ * Ciclo de vida da conexão
+ */
 public interface BluetoothConnectionListener{
     /**
      * Quando há erro na conexão
@@ -11,7 +14,7 @@ public interface BluetoothConnectionListener{
     void onBluetoothConnectionError();
 
     /**
-     * Obter o endereço de mac do bluetooth
+     * Obter o endereço de mac do bluetooth, chamado logo apos {@link #beforeBluetoothConnection()}
      *
      * @return String refente ao MAC
      */
