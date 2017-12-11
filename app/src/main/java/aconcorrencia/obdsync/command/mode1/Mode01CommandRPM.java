@@ -9,7 +9,7 @@ public class Mode01CommandRPM extends Mode01Command<Float>{
 
     @Override
     protected Float getDataResponse(ArrayList<Integer> bytesResult){
-        return (bytesResult.get(2) * 256 + bytesResult.get(3)) / 4f;
+        return (float)(bytesResult.get(2) * 256 + bytesResult.get(3)) / 4;
     }
 
     @Override
